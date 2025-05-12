@@ -13,39 +13,43 @@ use Illuminate\Http\JsonResponse;
 
 class SpotifyController extends Controller
 {
+    public function __construct(private readonly SpotifyService $spotifyService) {}
 
-  public function __construct(private readonly SpotifyService $spotifyService) {}
+    public function search(SearchDto $data): JsonResponse
+    {
+        $response = $this->spotifyService->search($data);
 
-  public function search(SearchDto $data): JsonResponse
-  {
-    $response = $this->spotifyService->search($data);
-    return response()->json($response);
-  }
+        return response()->json($response);
+    }
 
-  public function album(GetAlbumRequest $request, string $id): JsonResponse
-  {
-    $market = $request->safe()->market ?? '';
-    $response = $this->spotifyService->album($id, $market);
-    return response()->json($response);
-  }
+    public function album(GetAlbumRequest $request, string $id): JsonResponse
+    {
+        $market = $request->safe()->market ?? '';
+        $response = $this->spotifyService->album($id, $market);
 
-  public function track(GetTrackRequest $request, string $id): JsonResponse
-  {
-    $market = $request->safe()->market ?? '';
-    $response = $this->spotifyService->track($id, $market);
-    return response()->json($response);
-  }
+        return response()->json($response);
+    }
 
-  public function artist(string $id): JsonResponse
-  {
-    $response = $this->spotifyService->artist($id);
-    return response()->json($response);
-  }
+    public function track(GetTrackRequest $request, string $id): JsonResponse
+    {
+        $market = $request->safe()->market ?? '';
+        $response = $this->spotifyService->track($id, $market);
 
-  public function topTracks(GetArtistTopTracksRequest $request, string $id): JsonResponse
-  {
-    $market = $request->safe()->market ?? '';
-    $response = $this->spotifyService->topTracks($id, $market);
-    return response()->json($response);
-  }
+        return response()->json($response);
+    }
+
+    public function artist(string $id): JsonResponse
+    {
+        $response = $this->spotifyService->artist($id);
+
+        return response()->json($response);
+    }
+
+    public function topTracks(GetArtistTopTracksRequest $request, string $id): JsonResponse
+    {
+        $market = $request->safe()->market ?? '';
+        $response = $this->spotifyService->topTracks($id, $market);
+
+        return response()->json($response);
+    }
 }
