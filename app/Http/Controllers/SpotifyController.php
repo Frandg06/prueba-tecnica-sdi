@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enums\SpotifyMarket;
 use App\Http\Requests\GetAlbumRequest;
 use App\Http\Requests\GetTrackRequest;
 use App\Models\Dtos\SearchDto;
 use App\Services\SpotifyService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 class SpotifyController extends Controller
 {
@@ -20,16 +18,13 @@ class SpotifyController extends Controller
   public function search(SearchDto $data): JsonResponse
   {
     $response = $this->spotifyService->search($data);
-
     return response()->json($response);
   }
 
   public function album(GetAlbumRequest $request, string $id): JsonResponse
   {
     $market = $request->safe()->market ?? '';
-
     $response = $this->spotifyService->album($id, $market);
-
     return response()->json($response);
   }
 
@@ -37,7 +32,12 @@ class SpotifyController extends Controller
   {
     $market = $request->safe()->market ?? '';
     $response = $this->spotifyService->track($id, $market);
+    return response()->json($response);
+  }
 
+  public function artist(string $id): JsonResponse
+  {
+    $response = $this->spotifyService->artist($id);
     return response()->json($response);
   }
 }

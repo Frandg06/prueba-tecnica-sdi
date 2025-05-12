@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Exceptions\SpotifyException;
 use App\Http\Client\SpotifyClient;
 use App\Models\Dtos\SearchDto;
 
@@ -31,6 +30,12 @@ class SpotifyService
   public function track(string $id, string $market = ''): array
   {
     $response = $this->client->get('tracks/' . $id, ['market' => $market]);
+    return $response;
+  }
+
+  public function artist(string $id): array
+  {
+    $response = $this->client->get('artists/' . $id);
     return $response;
   }
 }
