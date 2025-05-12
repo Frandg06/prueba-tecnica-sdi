@@ -17,5 +17,7 @@ Route::prefix('v1')->middleware('i18n')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth:sanctum');
     });
 
-    Route::prefix('spotify')->middleware('auth:sanctum')->group(function () {});
+    Route::prefix('spotify')->middleware('auth:sanctum')->group(function () {
+        Route::get('/search', [SpotifyController::class, 'search'])->name('search');
+    });
 });
