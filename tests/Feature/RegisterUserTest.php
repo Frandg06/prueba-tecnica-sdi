@@ -11,8 +11,8 @@ class RegisterUserTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function user_can_register_successfully(): void
+
+    public function test_user_can_register_successfully(): void
     {
         $payload = [
             'name' => 'Jane Doe',
@@ -45,8 +45,8 @@ class RegisterUserTest extends TestCase
         $this->assertTrue(Hash::check('password', $user->password));
     }
 
-    /** @test */
-    public function register_fails_with_missing_fields(): void
+
+    public function test_register_fails_with_missing_fields(): void
     {
 
         $response = $this->postJson(route('register'), []);
@@ -58,8 +58,8 @@ class RegisterUserTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function register_fails_with_duplicate_email(): void
+
+    public function test_register_fails_with_duplicate_email(): void
     {
         $existing = User::factory()->create(['email' => 'john@example.com']);
 
