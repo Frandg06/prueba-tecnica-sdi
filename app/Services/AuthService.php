@@ -34,7 +34,7 @@ class AuthService
     } catch (\Exception $e) {
       DB::rollBack();
       Log::error($e->getMessage());
-      throw new \Exception('Se ha producido un error al registrar el usuario', 422);
+      throw new \Exception(__('i18n.register_user_ko'), 422);
     }
   }
 
@@ -51,7 +51,7 @@ class AuthService
       $user = User::where('email', $data['email'])->first();
 
       if (!Hash::check($data['password'], $user->password)) {
-        throw new \Exception('La credenciales proporcionadas no son correctas', 422);
+        throw new \Exception(__('i18n.credentials_invalid'), 422);
       }
 
       $user->tokens()->delete();
@@ -64,7 +64,7 @@ class AuthService
     } catch (\Exception $e) {
       DB::rollBack();
       Log::error($e->getMessage());
-      throw new \Exception('Se ha producido un error al iniciar sesión', 422);
+      throw new \Exception(__('i18n.login_user_ko'), 422);
     }
   }
 
@@ -83,7 +83,7 @@ class AuthService
     } catch (\Exception $e) {
       DB::rollBack();
       Log::error($e->getMessage());
-      throw new \Exception('Se ha producido un error al cerrar sesión', 422);
+      throw new \Exception(__('i18n.logout_ko'), 422);
     }
   }
 }

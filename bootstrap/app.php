@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (AuthenticationException $e) {
             return response()->json([
                 'error' => true,
-                'message' => "No tienes permisos para acceder a esta ruta",
+                'message' => __('i18n.authentication_error'),
             ], 401);
         });
 
@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json([
                 'error' => true,
                 'validation_errors' => $e->errors(),
-                'message' => "Se han producido errores en el formulario",
+                'message' => __('i18n.validation_error'),
             ], 422);
         });
 
@@ -43,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Exception $e) {
             return response()->json([
                 'error' => true,
-                'message' => "Se ha producido un error inesperado",
+                'message' => __('i18n.unexpected_error'),
             ], 500);
         });
     })->create();
