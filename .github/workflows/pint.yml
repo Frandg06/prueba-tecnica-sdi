@@ -2,9 +2,9 @@ name: Pint code style
 
 on:
   push:
-    branches: [ master ]       # Cada push/merge en master
+    branches: [ master ]      
   pull_request:
-    branches: [ master ]       # Opcional: valida los PR antes de mergear
+    branches: [ master ]      
 
 jobs:
   pint:
@@ -26,4 +26,4 @@ jobs:
           composer install --no-interaction --prefer-dist --no-progress --ansi
 
       - name: Run Pint
-        run: ./vendor/bin/pint  # --test hace que falle si hay errores
+        run: ./vendor/bin/pint
