@@ -20,7 +20,6 @@ Route::prefix('v1')->middleware('i18n')->group(function () {
     Route::prefix('spotify')->middleware('auth:sanctum')->group(function () {
         Route::get('/search', [SpotifyController::class, 'search'])->name('search');
         Route::get('/album/{id}', [SpotifyController::class, 'album'])->name('album');
-        Route::get('/playlist/{id}', [SpotifyController::class, 'playlist'])->name('playlist');
         Route::get('/track/{id}', [SpotifyController::class, 'track'])->name('track');
         Route::get('/artist/{id}', [SpotifyController::class, 'artist'])->name('artist');
         Route::get('/artists/{id}/top-tracks', [SpotifyController::class, 'top-tracks'])->name('artists.top-tracks');

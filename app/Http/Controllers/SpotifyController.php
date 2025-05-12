@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\SpotifyMarket;
 use App\Http\Requests\GetAlbumRequest;
+use App\Http\Requests\GetTrackRequest;
 use App\Models\Dtos\SearchDto;
 use App\Services\SpotifyService;
 use Illuminate\Http\JsonResponse;
@@ -28,6 +29,14 @@ class SpotifyController extends Controller
     $market = $request->safe()->market ?? '';
 
     $response = $this->spotifyService->album($id, $market);
+
+    return response()->json($response);
+  }
+
+  public function track(GetTrackRequest $request, string $id): JsonResponse
+  {
+    $market = $request->safe()->market ?? '';
+    $response = $this->spotifyService->track($id, $market);
 
     return response()->json($response);
   }

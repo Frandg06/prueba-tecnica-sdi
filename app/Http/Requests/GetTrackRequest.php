@@ -6,7 +6,7 @@ use App\Enums\SpotifyMarket;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class GetAlbumRequest extends FormRequest
+class GetTrackRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,6 +35,7 @@ class GetAlbumRequest extends FormRequest
     {
         return [
             'market' => ['nullable', 'string', new Enum(SpotifyMarket::class)],
+            'id' => ['required', 'string'],
         ];
     }
 }
