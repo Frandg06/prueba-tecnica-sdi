@@ -25,7 +25,6 @@ class SpotifyController extends Controller
 
   public function album(GetAlbumRequest $request, string $id): JsonResponse
   {
-
     $market = $request->safe()->market ?? '';
 
     $response = $this->spotifyService->album($id, $market);
