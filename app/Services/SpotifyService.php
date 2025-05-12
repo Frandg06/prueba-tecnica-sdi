@@ -21,4 +21,10 @@ class SpotifyService
     $response = $this->client->get('search', $data->toArray());
     return $response;
   }
+
+  public function album(string $id, string $market = ''): array
+  {
+    $response = $this->client->get('albums/' . $id);
+    return $response;
+  }
 }
