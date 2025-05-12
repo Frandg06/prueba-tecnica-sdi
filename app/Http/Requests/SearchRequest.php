@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\SpotifyMarket;
+use App\Enums\SpotifySearchType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class SearchRequest extends FormRequest
 {
@@ -33,8 +36,9 @@ class SearchRequest extends FormRequest
     {
         return [
             'q' => ['required', 'string'],
-            'type' => ['required', 'array', 'in:album,artist,playlist,track,show,episode,audiobook'],
-            'market' => ['nullable', 'string', 'in:AD,AE,AR,AT,AU,BE,BG,BH,BO,BR,CA,CH,CL,CO,CR,CY,CZ,DE,DK,DO,EC,EE,ES,FI,FR,GB,GR,GT,HK,HN,HU,ID,IE,IL,IN,IS,IT,JP,LI,LT,LU,LV,MC,MD,ME,MK,MT,MX,MY,NI,NL,NO,NZ,OM,PA,PE,PH,PL,PT,PY,QA,RO,RS,RU,SA,SE,SG,SI,SK,SV,TH,TR,TW,UA,US,UY,VN,ZA'],
+            'type' => ['required', 'array'],
+            'type.*' => [new Enum(SpotifySearchType::class)],
+            'market' => ['nullable', 'string', new Enum(SpotifyMarket::class)],
             'limit' => ['nullable', 'integer', 'between:1,50'],
             'offset' => ['nullable', 'integer', 'between:0,1000'],
             'include_external' => ['nullable', 'boolean'],
