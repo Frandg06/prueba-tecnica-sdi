@@ -18,7 +18,7 @@ class LoginUserTest extends TestCase
         ]);
 
         $payload = [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'secret-password',
         ];
 
@@ -49,7 +49,7 @@ class LoginUserTest extends TestCase
         ]);
 
         $payload = [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'wrong-password',
         ];
 

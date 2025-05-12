@@ -5,7 +5,6 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -14,7 +13,6 @@ use Tests\TestCase;
 final class LogoutUserTest extends TestCase
 {
     use RefreshDatabase;
-
 
     public function test_user_can_logout_successfully(): void
     {
@@ -36,7 +34,6 @@ final class LogoutUserTest extends TestCase
         $user->refresh();
         $this->assertSame(0, $user->tokens()->count(), 'Los tokens deben eliminarse después del logout');
     }
-
 
     public function test_logout_requires_authentication(): void
     {

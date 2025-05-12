@@ -11,7 +11,6 @@ class RegisterUserTest extends TestCase
 {
     use RefreshDatabase;
 
-
     public function test_user_can_register_successfully(): void
     {
         $payload = [
@@ -45,7 +44,6 @@ class RegisterUserTest extends TestCase
         $this->assertTrue(Hash::check('password', $user->password));
     }
 
-
     public function test_register_fails_with_missing_fields(): void
     {
 
@@ -57,7 +55,6 @@ class RegisterUserTest extends TestCase
                 'errors',
             ]);
     }
-
 
     public function test_register_fails_with_duplicate_email(): void
     {
