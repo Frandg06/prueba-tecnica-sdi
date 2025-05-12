@@ -1,10 +1,12 @@
 <?php
 
 use App\Exceptions\ApiException;
+use App\Exceptions\SpotifyException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -35,12 +37,23 @@ return Application::configure(basePath: dirname(__DIR__))
             ], 422);
         });
 
+        $exceptions->render(function (SpotifyException $exception) {
+            return response()->json([
+                'error' => true,
+                'message' => [
+                    __('i18n.spotify_error'),
+                    $exception->getMessage()
+                ],
+            ], $exception->getCode());
+        });
+
         $exceptions->render(function (ApiException $exception) {
             return response()->json([
                 'message' => $exception->getMessage(),
                 'error' => true,
             ], $exception->getCode());
         });
+
 
         $exceptions->render(function (Exception $e) {
             return response()->json([
