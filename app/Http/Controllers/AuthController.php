@@ -52,7 +52,7 @@ class AuthController extends Controller
 
     return response()->json([
       'success' => true,
-      'message' => 'Has cerrado sesión correctamente',
+      'message' => __('i18n.logout'),
     ]);
   }
 }
