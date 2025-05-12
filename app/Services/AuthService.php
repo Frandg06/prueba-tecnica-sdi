@@ -84,7 +84,7 @@ class AuthService
     } catch (\Exception $e) {
       DB::rollBack();
       Log::error($e->getMessage());
-      throw new ApiException(__('i18n.logout_user_ko'), 500);
+      throw new ApiException(__('i18n.logout_ko'), 500);
     }
   }
 }
