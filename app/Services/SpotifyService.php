@@ -38,4 +38,10 @@ class SpotifyService
     $response = $this->client->get('artists/' . $id);
     return $response;
   }
+
+  public function topTracks(string $id, string $market = ''): array
+  {
+    $response = $this->client->get('artists/' . $id . '/top-tracks', ['market' => $market]);
+    return $response;
+  }
 }
