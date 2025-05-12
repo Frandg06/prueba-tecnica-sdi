@@ -9,4 +9,6 @@ return [
   'unexpected_error' => 'There was an unexpected error',
   'validation_error' => 'There was an error validating the data',
   'authentication_error' => 'There was an error authenticating the user',
+  'spotify_token_ko' => 'There was an error getting the Spotify token',
+  'spotify_error' => 'There was an error in the Spotify API',
 ];

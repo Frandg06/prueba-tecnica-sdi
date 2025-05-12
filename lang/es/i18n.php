@@ -9,4 +9,6 @@ return [
     'unexpected_error' => 'Se ha producido un error inesperado',
     'validation_error' => 'Se ha producido un error al validar los datos',
     'authentication_error' => 'Se ha producido un error al autenticar el usuario',
+    'spotify_token_ko' => 'Se ha producido un error al obtener el token de Spotify',
+    'spotify_error' => 'Se ha producido un error en la API de Spotify',
 ];
