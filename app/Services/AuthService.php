@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Exceptions\ApiException;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -34,7 +35,7 @@ class AuthService
     } catch (\Exception $e) {
       DB::rollBack();
       Log::error($e->getMessage());
-      throw new \Exception(__('i18n.register_user_ko'), 422);
+      throw new ApiException(__('i18n.register_user_ko'), 500);
     }
   }
 
@@ -51,7 +52,7 @@ class AuthService
       $user = User::where('email', $data['email'])->first();
 
       if (!Hash::check($data['password'], $user->password)) {
-        throw new \Exception(__('i18n.credentials_invalid'), 422);
+        throw new ApiException(__('i18n.credentials_invalid'), 500);
       }
 
       $user->tokens()->delete();
@@ -64,7 +65,7 @@ class AuthService
     } catch (\Exception $e) {
       DB::rollBack();
       Log::error($e->getMessage());
-      throw new \Exception(__('i18n.login_user_ko'), 422);
+      throw new ApiException(__('i18n.login_user_ko'), 500);
     }
   }
 
@@ -83,7 +84,7 @@ class AuthService
     } catch (\Exception $e) {
       DB::rollBack();
       Log::error($e->getMessage());
-      throw new \Exception(__('i18n.logout_ko'), 422);
+      throw new ApiException(__('i18n.logout_user_ko'), 500);
     }
   }
 }
