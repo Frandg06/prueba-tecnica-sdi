@@ -25,5 +25,26 @@ return [
 
   'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
 
+  /*
+    |--------------------------------------------------------------------------
+    | API URL
+    |--------------------------------------------------------------------------
+    |
+    | The API URL is available on the Spotify Developer Dashboard.
+    |
+    */
+
+  'api_url' => env('SPOTIFY_API_URL'),
+
+  /*
+    |--------------------------------------------------------------------------
+    | Authorization URL
+    |--------------------------------------------------------------------------
+    |
+    | The Authorization URL is available on the Spotify Developer Dashboard.
+    |        
+    */
+
+  'spotify_auth_url' => env('SPOTIFY_AUTH_URL'),
 
 ];
