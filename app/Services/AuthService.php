@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Log;
 class AuthService
 {
     /**
-     * @throws Exception
+     * @param array $data
+     * @throws ApiException
      */
     public function register(array $data): array
     {
