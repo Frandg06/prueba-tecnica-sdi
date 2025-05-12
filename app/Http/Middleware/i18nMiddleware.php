@@ -28,7 +28,6 @@ class i18nMiddleware
             App::setLocale($lang);
         }
 
-
         return $next($request);
     }
 }
