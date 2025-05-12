@@ -12,47 +12,35 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-  public function __construct(private readonly AuthService $authService) {}
+    public function __construct(private readonly AuthService $authService) {}
 
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $response = $this->authService->register($request->validated());
 
-  /**
-   * @param RegisterRequest $request
-   * @return JsonResponse
-   */
-  public function register(RegisterRequest $request): JsonResponse
-  {
-    $response = $this->authService->register($request->validated());
+        return response()->json([
+            'success' => true,
+            'data' => $response,
+        ]);
+    }
 
-    return response()->json([
-      'success' => true,
-      'data' => $response,
-    ]);
-  }
-  /**
-   * @param LoginRequest $request
-   * @return JsonResponse
-   */
-  public function login(LoginRequest $request): JsonResponse
-  {
-    $response = $this->authService->login($request->validated());
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $response = $this->authService->login($request->validated());
 
-    return response()->json([
-      'success' => true,
-      'data' => $response,
-    ]);
-  }
+        return response()->json([
+            'success' => true,
+            'data' => $response,
+        ]);
+    }
 
-  /**
-   * @param Request $request
-   * @return JsonResponse
-   */
-  public function logout(Request $request): JsonResponse
-  {
-    $this->authService->logout($request->user());
+    public function logout(Request $request): JsonResponse
+    {
+        $this->authService->logout($request->user());
 
-    return response()->json([
-      'success' => true,
-      'message' => __('i18n.logout'),
-    ]);
-  }
+        return response()->json([
+            'success' => true,
+            'message' => __('i18n.logout'),
+        ]);
+    }
 }
