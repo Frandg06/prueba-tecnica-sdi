@@ -8,6 +8,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -38,6 +39,20 @@ class AuthController extends Controller
     return response()->json([
       'success' => true,
       'data' => $response,
+    ]);
+  }
+
+  /**
+   * @param Request $request
+   * @return JsonResponse
+   */
+  public function logout(Request $request): JsonResponse
+  {
+    $this->authService->logout($request->user());
+
+    return response()->json([
+      'success' => true,
+      'message' => 'Has cerrado sesión correctamente',
     ]);
   }
 }

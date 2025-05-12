@@ -14,7 +14,7 @@ class AuthService
 
   /**
    * @param array $data
-   * @throws ApiException
+   * @throws Exception
    * @return array
    */
   public function register(array $data): array
@@ -41,7 +41,7 @@ class AuthService
   /**
    * @param array $data
    * @return array
-   * @throws ApiException
+   * @throws Exception
    */
   public function login(array $data): array
   {
@@ -65,6 +65,25 @@ class AuthService
       DB::rollBack();
       Log::error($e->getMessage());
       throw new \Exception('Se ha producido un error al iniciar sesión', 422);
+    }
+  }
+
+
+  /**
+   * @param User $user
+   * @throws Exception
+   * @return void
+   */
+  public function logout(User $user): void
+  {
+    DB::beginTransaction();
+    try {
+      $user->tokens()->delete();
+      DB::commit();
+    } catch (\Exception $e) {
+      DB::rollBack();
+      Log::error($e->getMessage());
+      throw new \Exception('Se ha producido un error al cerrar sesión', 422);
     }
   }
 }
