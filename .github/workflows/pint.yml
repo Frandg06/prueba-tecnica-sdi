@@ -1,0 +1,29 @@
+name: Pint code style
+
+on:
+  push:
+    branches: [ master ]       # Cada push/merge en master
+  pull_request:
+    branches: [ master ]       # Opcional: valida los PR antes de mergear
+
+jobs:
+  pint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Usa caché de Composer para acelerar
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress --ansi
+
+      - name: Run Pint
+        run: ./vendor/bin/pint --test   # --test hace que falle si hay errores
