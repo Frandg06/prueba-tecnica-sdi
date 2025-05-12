@@ -52,7 +52,6 @@ return Application::configure(basePath: dirname(__DIR__))
             ], $exception->getCode());
         });
 
-
         $exceptions->render(function (Exception $e) {
             return response()->json([
                 'error' => true,
