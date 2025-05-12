@@ -12,36 +12,40 @@ use App\Models\Dtos\SearchDto;
  */
 class SpotifyService
 {
+    public function __construct(private readonly SpotifyClient $client) {}
 
-  public function __construct(private readonly SpotifyClient $client) {}
+    public function search(SearchDto $data): array
+    {
+        $response = $this->client->get('search', $data->toArray());
 
-  public function search(SearchDto $data): array
-  {
-    $response = $this->client->get('search', $data->toArray());
-    return $response;
-  }
+        return $response;
+    }
 
-  public function album(string $id, string $market = ''): array
-  {
-    $response = $this->client->get('albums/' . $id, ['market' => $market]);
-    return $response;
-  }
+    public function album(string $id, string $market = ''): array
+    {
+        $response = $this->client->get('albums/'.$id, ['market' => $market]);
 
-  public function track(string $id, string $market = ''): array
-  {
-    $response = $this->client->get('tracks/' . $id, ['market' => $market]);
-    return $response;
-  }
+        return $response;
+    }
 
-  public function artist(string $id): array
-  {
-    $response = $this->client->get('artists/' . $id);
-    return $response;
-  }
+    public function track(string $id, string $market = ''): array
+    {
+        $response = $this->client->get('tracks/'.$id, ['market' => $market]);
 
-  public function topTracks(string $id, string $market = ''): array
-  {
-    $response = $this->client->get('artists/' . $id . '/top-tracks', ['market' => $market]);
-    return $response;
-  }
+        return $response;
+    }
+
+    public function artist(string $id): array
+    {
+        $response = $this->client->get('artists/'.$id);
+
+        return $response;
+    }
+
+    public function topTracks(string $id, string $market = ''): array
+    {
+        $response = $this->client->get('artists/'.$id.'/top-tracks', ['market' => $market]);
+
+        return $response;
+    }
 }
