@@ -32,7 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (ValidationException $e) {
             return response()->json([
                 'error' => true,
-                'validation_errors' => $e->errors(),
+                'errors' => $e->errors(),
                 'message' => __('i18n.validation_error'),
             ], 422);
         });
@@ -40,10 +40,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (SpotifyException $exception) {
             return response()->json([
                 'error' => true,
-                'message' => [
-                    __('i18n.spotify_error'),
-                    $exception->getMessage()
-                ],
+                'message' => __('i18n.spotify_error'),
+                'errors' => $exception->getMessage(),
             ], $exception->getCode());
         });
 
