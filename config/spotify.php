@@ -2,7 +2,7 @@
 
 return [
 
-  /*
+    /*
     |--------------------------------------------------------------------------
     | Client ID
     |--------------------------------------------------------------------------
@@ -11,10 +11,9 @@ return [
     |
     */
 
-  'client_id' => env('SPOTIFY_CLIENT_ID'),
+    'client_id' => env('SPOTIFY_CLIENT_ID'),
 
-
-  /*
+    /*
     |--------------------------------------------------------------------------
     | Client Secret
     |--------------------------------------------------------------------------
@@ -23,9 +22,9 @@ return [
     |
     */
 
-  'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
+    'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
 
-  /*
+    /*
     |--------------------------------------------------------------------------
     | API URL
     |--------------------------------------------------------------------------
@@ -34,17 +33,17 @@ return [
     |
     */
 
-  'api_url' => env('SPOTIFY_API_URL'),
+    'api_url' => env('SPOTIFY_API_URL'),
 
-  /*
+    /*
     |--------------------------------------------------------------------------
     | Authorization URL
     |--------------------------------------------------------------------------
     |
     | The Authorization URL is available on the Spotify Developer Dashboard.
-    |        
+    |
     */
 
-  'spotify_auth_url' => env('SPOTIFY_AUTH_URL'),
+    'spotify_auth_url' => env('SPOTIFY_AUTH_URL'),
 
 ];
