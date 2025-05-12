@@ -1,19 +1,49 @@
 <?php
 
+use App\Exceptions\ApiException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (AuthenticationException $e) {
+            return response()->json([
+                'error' => true,
+                'message' => "No tienes permisos para acceder a esta ruta",
+            ], 401);
+        });
+
+        $exceptions->render(function (ValidationException $e) {
+            return response()->json([
+                'error' => true,
+                'validation_errors' => $e->errors(),
+                'message' => "Se han producido errores en el formulario",
+            ], 422);
+        });
+
+        $exceptions->render(function (ApiException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'error' => true,
+            ], $exception->getCode());
+        });
+
+        $exceptions->render(function (Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => "Se ha producido un error inesperado",
+            ], 500);
+        });
     })->create();
