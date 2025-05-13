@@ -13,9 +13,9 @@ services:
         restart: unless-stopped
         environment:
             MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: sdi
+            MYSQL_DATABASE: sdi_db
             MYSQL_USER: sdi
-            MYSQL_PASSWORD: sdi
+            MYSQL_PASSWORD: root
         volumes:
             - sdi_db:/var/lib/mysql
         networks:
@@ -37,7 +37,9 @@ services:
         networks:
             - sdi_network
         environment:
+            DB_CONNECTION: mysql
             DB_HOST: sdi_db
-            DB_DATABASE: sdi
+            DB_DATABASE: sdi_db
             DB_USERNAME: sdi
-            DB_PASSWORD: sdi
+            DB_PASSWORD: root
+            DB_PORT: 3306
