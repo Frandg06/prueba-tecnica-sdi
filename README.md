@@ -53,7 +53,7 @@ cp .env.example .env
 
 ```bash
 # Descarga las imágenes y arranca todo en segundo plano
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 -   Contenedor **sdi_app** → Laravel
@@ -64,7 +64,7 @@ docker-compose up -d --build
 > Para generar la base de datos usando las migraciones definidas en el proyecto, ejecuta:
 >
 > ```bash
-> docker-compose exec sdi_app php artisan migrate:fresh
+> docker compose exec sdi_app php artisan migrate:fresh
 > ```
 
 ## 4 · Acceder a la aplicación
@@ -76,5 +76,17 @@ docker-compose up -d --build
 | **MySQL (CLI o IDE)**     | host `127.0.0.1`, puerto `3333`, usuario `sdi`, contraseña la indicada en `.env` |
 
 Si no has tocado nada, el puerto de acceso deberia ser 8888 que se define en el `docker-compose.yml`.
+
+### Verificar que los tests funcionan correctamente
+
+Puedes ejecutar los tests definidos en el proyecto con el siguiente comando:
+
+```bash
+docker compose exec app php artisan test
+```
+
+Esto te permitirá verificar que las funcionalidades principales están correctamente implementadas y que el entorno está funcionando como se espera.
+
+> 🧪 **Nota**: Me hubiera gustado crear una batería de tests más completa para los servicios que interactúan con la API de Spotify. Sin embargo, debido a compromisos laborales no tuve tiempo suficiente para implementarlos adecuadamente.
 
 ---
