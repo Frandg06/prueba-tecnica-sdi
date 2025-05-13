@@ -1,7 +1,5 @@
 <?php
 
-use App\Exceptions\ApiException;
-use App\Exceptions\SpotifyException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -10,9 +8,9 @@ use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__ . '/../routes/web.php',
-        api: __DIR__ . '/../routes/api.php',
-        commands: __DIR__ . '/../routes/console.php',
+        web: __DIR__.'/../routes/web.php',
+        api: __DIR__.'/../routes/api.php',
+        commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
@@ -24,7 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (AuthenticationException $e) {
             return response()->json([
                 'error' => true,
-                'message' => __('i18n.authentication_error')
+                'message' => __('i18n.authentication_error'),
             ], 401);
         });
 
@@ -35,7 +33,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 'message' => __('i18n.validation_error'),
             ], 422);
         });
-
 
         $exceptions->render(function (Exception $e) {
             return response()->json([
