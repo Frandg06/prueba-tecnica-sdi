@@ -1,0 +1,1325 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Prueba SDI",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8888/api"
+        }
+    ],
+    "paths": {
+        "/v1/auth/register": {
+            "post": {
+                "operationId": "register",
+                "summary": "Registrar un nuevo usuario",
+                "tags": ["Auth"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                }
+                                            },
+                                            "required": ["token", "user"]
+                                        },
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "required": ["data", "success"]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AuthorizationException"
+                    }
+                }
+            }
+        },
+        "/v1/auth/login": {
+            "post": {
+                "operationId": "login",
+                "summary": "Logear un usuario",
+                "tags": ["Auth"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                }
+                                            },
+                                            "required": ["token", "user"]
+                                        },
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "required": ["data", "success"]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AuthorizationException"
+                    }
+                }
+            }
+        },
+        "/v1/auth/logout": {
+            "post": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "operationId": "logout",
+                "summary": "Cerrar sesi\u00f3n de un usuario",
+                "tags": ["Auth"],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": ["success", "message"]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/v1/spotify/search": {
+            "get": {
+                "operationId": "search",
+                "description": "Realiza una b\u00fasqueda por palabra clave en Spotify.",
+                "summary": "Buscar contenido en Spotify",
+                "tags": ["Spotify"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/SpotifyMarket"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": ["integer", "null"]
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "schema": {
+                            "type": ["integer", "null"]
+                        }
+                    },
+                    {
+                        "name": "include_external",
+                        "in": "query",
+                        "schema": {
+                            "type": ["boolean", "null"]
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SpotifySearchType"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SearchResults"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/SpotifyApiException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AuthorizationException"
+                    }
+                }
+            }
+        },
+        "/v1/spotify/album/{id}": {
+            "get": {
+                "operationId": "album",
+                "description": "Devuelve la informaci\u00f3n de un \u00e1lbum de Spotify.",
+                "summary": "Obtener un \u00e1lbum",
+                "tags": ["Spotify"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/SpotifyMarket"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PagingAlbumObject"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/SpotifyApiException"
+                    },
+
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AuthorizationException"
+                    }
+                }
+            }
+        },
+        "/v1/spotify/track/{id}": {
+            "get": {
+                "operationId": "track",
+                "description": "Devuelve la informaci\u00f3n de una canci\u00f3n de Spotify.",
+                "summary": "Obtener una canci\u00f3n",
+                "tags": ["Spotify"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/SpotifyMarket"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TrackObject"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/SpotifyApiException"
+                    },
+
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AuthorizationException"
+                    }
+                }
+            }
+        },
+        "/v1/spotify/artists/{id}": {
+            "get": {
+                "operationId": "artist",
+                "description": "Devuelve los datos de un artista de Spotify.",
+                "summary": "Obtener un artista",
+                "tags": ["Spotify"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArtistObject"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/SpotifyApiException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AuthorizationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
+        },
+        "/v1/spotify/artists/{id}/top-tracks": {
+            "get": {
+                "operationId": "artists.top-tracks",
+                "description": "Devuelve las canciones m\u00e1s populares de un artista.",
+                "summary": "Top canciones de un artista",
+                "tags": ["Spotify"],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "schema": {
+                            "$ref": "#/components/schemas/SpotifyMarket"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArtistTopTracksResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/SpotifyApiException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/AuthorizationException"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "LoginRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    }
+                },
+                "required": ["email", "password"],
+                "title": "LoginRequest"
+            },
+            "RegisterRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "minLength": 8
+                    }
+                },
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+                "title": "RegisterRequest"
+            },
+            "SpotifyMarket": {
+                "type": "string",
+                "enum": [
+                    "AD",
+                    "AE",
+                    "AR",
+                    "AT",
+                    "AU",
+                    "BE",
+                    "BG",
+                    "BH",
+                    "BO",
+                    "BR",
+                    "CA",
+                    "CH",
+                    "CL",
+                    "CO",
+                    "CR",
+                    "CY",
+                    "CZ",
+                    "DE",
+                    "DK",
+                    "DO",
+                    "EC",
+                    "EE",
+                    "ES",
+                    "FI",
+                    "FR",
+                    "GB",
+                    "GR",
+                    "GT",
+                    "HK",
+                    "HN",
+                    "HU",
+                    "ID",
+                    "IE",
+                    "IL",
+                    "IN",
+                    "IS",
+                    "IT",
+                    "JP",
+                    "LI",
+                    "LT",
+                    "LU",
+                    "LV",
+                    "MC",
+                    "MD",
+                    "ME",
+                    "MK",
+                    "MT",
+                    "MX",
+                    "MY",
+                    "NI",
+                    "NL",
+                    "NO",
+                    "NZ",
+                    "OM",
+                    "PA",
+                    "PE",
+                    "PH",
+                    "PL",
+                    "PT",
+                    "PY",
+                    "QA",
+                    "RO",
+                    "RS",
+                    "RU",
+                    "SA",
+                    "SE",
+                    "SG",
+                    "SI",
+                    "SK",
+                    "SV",
+                    "TH",
+                    "TR",
+                    "TW",
+                    "UA",
+                    "US",
+                    "UY",
+                    "VN",
+                    "ZA"
+                ],
+                "title": "SpotifyMarket"
+            },
+            "SpotifySearchType": {
+                "type": "string",
+                "enum": [
+                    "album",
+                    "artist",
+                    "playlist",
+                    "track",
+                    "show",
+                    "episode",
+                    "audiobook"
+                ],
+                "title": "SpotifySearchType"
+            },
+            "UserResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "required": ["id", "name", "email"],
+                "title": "UserResource"
+            },
+            "PagingObject": {
+                "type": "object",
+                "required": ["href", "limit", "offset", "total"],
+                "properties": {
+                    "href": { "type": "string", "format": "uri" },
+                    "limit": { "type": "integer" },
+                    "next": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "offset": { "type": "integer" },
+                    "previous": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "total": { "type": "integer" }
+                }
+            },
+            "PagingAlbumObject": {
+                "allOf": [
+                    { "$ref": "#/components/schemas/PagingObject" },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/AlbumObject"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "PagingArtistObject": {
+                "allOf": [
+                    { "$ref": "#/components/schemas/PagingObject" },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/ArtistObject"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "PagingPlaylistObject": {
+                "allOf": [
+                    { "$ref": "#/components/schemas/PagingObject" },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/PlaylistObject"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "PagingTrackObject": {
+                "allOf": [
+                    { "$ref": "#/components/schemas/PagingObject" },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/TrackObject"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "PagingShowObject": {
+                "allOf": [
+                    { "$ref": "#/components/schemas/PagingObject" },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/ShowObject"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "PagingEpisodeObject": {
+                "allOf": [
+                    { "$ref": "#/components/schemas/PagingObject" },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/EpisodeObject"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "PagingAudiobookObject": {
+                "allOf": [
+                    { "$ref": "#/components/schemas/PagingObject" },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/AudiobookObject"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "AlbumObject": {
+                "type": "object",
+                "required": [
+                    "album_type",
+                    "total_tracks",
+                    "available_markets",
+                    "external_urls",
+                    "href",
+                    "id",
+                    "images",
+                    "name",
+                    "release_date",
+                    "release_date_precision",
+                    "type",
+                    "uri",
+                    "artists",
+                    "tracks",
+                    "copyrights",
+                    "external_ids",
+                    "genres",
+                    "label",
+                    "popularity"
+                ],
+                "properties": {
+                    "album_type": {
+                        "type": "string",
+                        "enum": ["album", "single", "compilation"]
+                    },
+                    "total_tracks": {
+                        "type": "integer"
+                    },
+                    "available_markets": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "minLength": 2,
+                            "maxLength": 2,
+                            "description": "ISO 3166‑1 alpha‑2 country code"
+                        }
+                    },
+                    "external_urls": {
+                        "$ref": "#/components/schemas/ExternalUrlObject"
+                    },
+                    "href": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "Spotify ID"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ImageObject"
+                        }
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "release_date": {
+                        "type": "string",
+                        "description": "Date the album was first released (ISO 8601 partial)"
+                    },
+                    "release_date_precision": {
+                        "type": "string",
+                        "enum": ["year", "month", "day"]
+                    },
+                    "restrictions": {
+                        "$ref": "#/components/schemas/RestrictionsObject"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": ["album"]
+                    },
+                    "uri": {
+                        "type": "string",
+                        "description": "Spotify URI"
+                    },
+                    "artists": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplifiedArtistObject"
+                        }
+                    },
+                    "tracks": {
+                        "$ref": "#/components/schemas/PagingTrackObject"
+                    },
+                    "copyrights": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CopyrightObject"
+                        }
+                    },
+                    "external_ids": {
+                        "$ref": "#/components/schemas/ExternalIdObject"
+                    },
+                    "genres": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "popularity": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100
+                    }
+                }
+            },
+            "ArtistObject": {
+                "type": "object",
+                "required": [
+                    "external_urls",
+                    "followers",
+                    "genres",
+                    "href",
+                    "id",
+                    "images",
+                    "name",
+                    "popularity",
+                    "type",
+                    "uri"
+                ],
+                "properties": {
+                    "external_urls": {
+                        "$ref": "#/components/schemas/ExternalUrlObject"
+                    },
+                    "followers": {
+                        "$ref": "#/components/schemas/FollowersObject"
+                    },
+                    "genres": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "href": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "id": {
+                        "type": "string",
+                        "description": "Spotify artist ID"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ImageObject"
+                        }
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "popularity": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": ["artist"]
+                    },
+                    "uri": {
+                        "type": "string",
+                        "description": "Spotify URI"
+                    }
+                }
+            },
+            "TrackObject": {
+                "type": "object",
+                "required": [
+                    "album",
+                    "artists",
+                    "available_markets",
+                    "disc_number",
+                    "duration_ms",
+                    "explicit",
+                    "external_ids",
+                    "external_urls",
+                    "href",
+                    "id",
+                    "is_local",
+                    "name",
+                    "popularity",
+                    "track_number",
+                    "type",
+                    "uri"
+                ],
+                "properties": {
+                    "album": {
+                        "$ref": "#/components/schemas/SimplifiedAlbumObject"
+                    },
+                    "artists": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimplifiedArtistObject"
+                        }
+                    },
+                    "available_markets": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "minLength": 2,
+                            "maxLength": 2,
+                            "description": "ISO 3166‑1 alpha‑2 country code"
+                        }
+                    },
+                    "disc_number": { "type": "integer" },
+                    "duration_ms": { "type": "integer" },
+                    "explicit": { "type": "boolean" },
+                    "external_ids": {
+                        "$ref": "#/components/schemas/ExternalIdObject"
+                    },
+                    "external_urls": {
+                        "$ref": "#/components/schemas/ExternalUrlObject"
+                    },
+                    "href": { "type": "string", "format": "uri" },
+                    "id": { "type": "string" },
+                    "is_playable": { "type": "boolean", "nullable": true },
+                    "linked_from": {
+                        "$ref": "#/components/schemas/TrackLinkObject",
+                        "nullable": true
+                    },
+                    "restrictions": {
+                        "$ref": "#/components/schemas/RestrictionsObject",
+                        "nullable": true
+                    },
+                    "name": { "type": "string" },
+                    "popularity": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100
+                    },
+                    "preview_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "track_number": { "type": "integer" },
+                    "type": { "type": "string", "enum": ["track"] },
+                    "uri": { "type": "string" },
+                    "is_local": { "type": "boolean" }
+                }
+            },
+            "TrackLinkObject": {
+                "type": "object",
+                "description": "Metadata for a linked track (appears when Track Relinking is applied).",
+                "required": ["external_urls", "href", "id", "type", "uri"],
+                "properties": {
+                    "external_urls": {
+                        "$ref": "#/components/schemas/ExternalUrlObject"
+                    },
+                    "href": { "type": "string", "format": "uri" },
+                    "id": { "type": "string" },
+                    "type": { "type": "string", "enum": ["track"] },
+                    "uri": { "type": "string" }
+                }
+            },
+            "SimplifiedAlbumObject": {
+                "type": "object",
+                "required": [
+                    "album_type",
+                    "external_urls",
+                    "href",
+                    "id",
+                    "images",
+                    "name",
+                    "release_date",
+                    "release_date_precision",
+                    "type",
+                    "uri"
+                ],
+                "properties": {
+                    "album_type": {
+                        "type": "string",
+                        "enum": ["album", "single", "compilation"]
+                    },
+                    "external_urls": {
+                        "$ref": "#/components/schemas/ExternalUrlObject"
+                    },
+                    "href": { "type": "string", "format": "uri" },
+                    "id": { "type": "string" },
+                    "images": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/ImageObject" }
+                    },
+                    "name": { "type": "string" },
+                    "release_date": { "type": "string" },
+                    "release_date_precision": {
+                        "type": "string",
+                        "enum": ["year", "month", "day"]
+                    },
+                    "type": { "type": "string", "enum": ["album"] },
+                    "uri": { "type": "string" }
+                }
+            },
+            "ArtistTopTracksResponse": {
+                "type": "object",
+                "required": ["tracks"],
+                "properties": {
+                    "tracks": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TrackObject"
+                        },
+                        "description": "Array of the artist's top tracks, ordered by popularity."
+                    }
+                }
+            },
+            "SearchResults": {
+                "type": "object",
+                "description": "Objeto de respuesta devuelto por la API de Spotify para el endpoint de búsqueda.",
+                "properties": {
+                    "albums": {
+                        "$ref": "#/components/schemas/PagingAlbumObject"
+                    },
+                    "artists": {
+                        "$ref": "#/components/schemas/PagingArtistObject"
+                    },
+                    "playlists": {
+                        "$ref": "#/components/schemas/PagingPlaylistObject"
+                    },
+                    "tracks": {
+                        "$ref": "#/components/schemas/PagingTrackObject"
+                    },
+                    "shows": {
+                        "$ref": "#/components/schemas/PagingShowObject"
+                    },
+                    "episodes": {
+                        "$ref": "#/components/schemas/PagingEpisodeObject"
+                    },
+                    "audiobooks": {
+                        "$ref": "#/components/schemas/PagingAudiobookObject"
+                    }
+                }
+            },
+            "ExternalUrlObject": {
+                "type": "object",
+                "required": ["spotify"],
+                "properties": {
+                    "spotify": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "additionalProperties": true
+            },
+            "ImageObject": {
+                "type": "object",
+                "required": ["url"],
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "height": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "width": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                }
+            },
+            "SimplifiedArtistObject": {
+                "type": "object",
+                "required": [
+                    "external_urls",
+                    "href",
+                    "id",
+                    "name",
+                    "type",
+                    "uri"
+                ],
+                "properties": {
+                    "external_urls": {
+                        "$ref": "#/components/schemas/ExternalUrlObject"
+                    },
+                    "href": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": ["artist"]
+                    },
+                    "uri": {
+                        "type": "string"
+                    }
+                }
+            },
+            "RestrictionsObject": {
+                "type": "object",
+                "required": ["reason"],
+                "properties": {
+                    "reason": {
+                        "type": "string",
+                        "enum": ["market", "product", "explicit"]
+                    }
+                }
+            },
+            "CopyrightObject": {
+                "type": "object",
+                "required": ["text", "type"],
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": ["C", "P"]
+                    }
+                }
+            },
+            "ExternalIdObject": {
+                "type": "object",
+                "properties": {
+                    "isrc": { "type": "string" },
+                    "ean": { "type": "string" },
+                    "upc": { "type": "string" }
+                }
+            },
+            "FollowersObject": {
+                "type": "object",
+                "required": ["total"],
+                "properties": {
+                    "href": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "total": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "PlaylistObject": {
+                "type": "object",
+                "description": "Objeto devuelto por la API de Spotify. (No desarrollado)"
+            },
+            "ShowObject": {
+                "type": "object",
+                "description": "Objeto devuelto por la API de Spotify. (No desarrollado)"
+            },
+            "EpisodeObject": {
+                "type": "object",
+                "description": "Objeto devuelto por la API de Spotify. (No desarrollado)"
+            },
+            "AudiobookObject": {
+                "type": "object",
+                "description": "Objeto devuelto por la API de Spotify. (No desarrollado)"
+            }
+        },
+        "responses": {
+            "ValidationException": {
+                "description": "Validation error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Errors overview."
+                                },
+                                "errors": {
+                                    "type": "object",
+                                    "description": "A detailed description of each field that failed validation.",
+                                    "additionalProperties": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "error": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+
+                            "required": ["message", "errors"]
+                        }
+                    }
+                }
+            },
+            "AuthorizationException": {
+                "description": "Authorization error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": ["message"]
+                        }
+                    }
+                }
+            },
+            "AuthenticationException": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean",
+                                    "example": true
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "No autenticado."
+                                }
+                            },
+                            "required": ["message", "error"]
+                        }
+                    }
+                }
+            },
+            "SpotifyApiException": {
+                "description": "Error de la API de Spotify",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Se ha producido un error en la API de Spotify."
+                                },
+                                "error": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bad Request"
+                                        }
+                                    }
+                                }
+                            },
+                            "required": ["error", "message"]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
