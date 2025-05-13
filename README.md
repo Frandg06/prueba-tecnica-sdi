@@ -59,8 +59,17 @@ docker compose up -d --build
 -   Contenedor **sdi_app** → Laravel
 -   Contenedor **sdi_db** → MySQL 8
 
-> **Primera ejecución**: cuando los contenedores se levantan por primera vez, la base de datos se encuentra vacía.
+> **Primera ejecución**:
+> Al levantar el proyecto necesitamos instalar las dependencias de los paquetes de Composer.
+> Para ello, ejecuta:
 >
+> ```bash
+> docker compose exec sdi_app composer install
+> ```
+>
+> También puedes ejecutar el comando `composer install` en el directorio del proyecto.
+
+> Cuando los contenedores se levantan por primera vez, la base de datos se encuentra vacía.
 > Para generar la base de datos usando las migraciones definidas en el proyecto, ejecuta:
 >
 > ```bash
