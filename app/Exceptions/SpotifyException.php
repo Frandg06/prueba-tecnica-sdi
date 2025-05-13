@@ -20,8 +20,8 @@ class SpotifyException extends Exception
         return response()->json(
             [
                 'message' => __('i18n.spotify_error'),
-                'error'   => [
-                    'status'  => $this->status,
+                'error' => [
+                    'status' => $this->status,
                     'message' => $this->getMessage(),
                 ],
             ],
