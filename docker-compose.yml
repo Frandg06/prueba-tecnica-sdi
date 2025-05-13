@@ -1,0 +1,43 @@
+networks:
+    sdi_network:
+        driver: bridge
+
+volumes:
+    sdi_db:
+        driver: local
+
+services:
+    sdi_db:
+        image: mysql:8.0
+        container_name: sdi_db
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: sdi
+            MYSQL_USER: sdi
+            MYSQL_PASSWORD: sdi
+        volumes:
+            - sdi_db:/var/lib/mysql
+        networks:
+            - sdi_network
+        ports:
+            - "3333:3306"
+    sdi_app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: sdi_app
+        restart: unless-stopped
+        volumes:
+            - .:/var/www/html
+        ports:
+            - "8888:80"
+        depends_on:
+            - sdi_db
+        networks:
+            - sdi_network
+        environment:
+            DB_HOST: sdi_db
+            DB_DATABASE: sdi
+            DB_USERNAME: sdi
+            DB_PASSWORD: sdi
