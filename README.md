@@ -29,14 +29,14 @@ cd prueba-tecnica-sdi
 
 Laravel utiliza un archivo de variables de entorno para la configuración. Desde ahi puedes configurar las claves de Spotify y otros parámetros de tu aplicación.
 
-Las claves de la base de datos se encuentran en el archivo `.env.example` y deben en caso de ser modificadas se debe actualizar también el archivo `docker-compose.yml`.
-y ejecutar `docker-compose up -d --build` para actualizar los contenedores.
-
 Ejecute el siguiente comando para copiar el archivo `.env.example` y crear el archivo `.env`:
 
 ```bash
 cp .env.example .env
 ```
+
+Las claves de la base de datos se encuentran en el archivo `.env` y en caso de ser modificadas se debe actualizar también el archivo `docker-compose.yml`.
+y ejecutar `docker-compose up -d --build` para actualizar los contenedores.
 
 ### Variables mínimas a ajustar
 
