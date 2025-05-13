@@ -22,7 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (AuthenticationException $e) {
-            return response()->json(['message' => __('i18n.authentication_error')], 401);
+            return response()->json([
+                'error' => true,
+                'message' => __('i18n.authentication_error')
+            ], 401);
         });
 
         $exceptions->render(function (ValidationException $e) {
