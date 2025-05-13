@@ -36,10 +36,3 @@ services:
             - sdi_db
         networks:
             - sdi_network
-        environment:
-            DB_CONNECTION: mysql
-            DB_HOST: sdi_db
-            DB_DATABASE: sdi_db
-            DB_USERNAME: sdi
-            DB_PASSWORD: root
-            DB_PORT: 3306
