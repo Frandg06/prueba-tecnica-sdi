@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\Log;
 class AuthService
 {
     /**
-     * @throws ApiException
+     * @param array $data
+     * @return array
      */
     public function register(array $data): array
     {
         DB::beginTransaction();
         try {
-
             $user = User::create($data);
 
             $user->createToken('Spotify')->plainTextToken;
@@ -38,7 +38,8 @@ class AuthService
     }
 
     /**
-     * @throws Exception
+     * @param array $data
+     * @return array
      */
     public function login(array $data): array
     {
@@ -67,7 +68,8 @@ class AuthService
     }
 
     /**
-     * @throws Exception
+     * @param User $user
+     * @return void
      */
     public function logout(User $user): void
     {
