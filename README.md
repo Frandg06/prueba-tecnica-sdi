@@ -1,61 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Prueba Técnica – Laravel + MySQL (Docker)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> **Objetivo**: Guía rápida para clonar el proyecto, configurar las variables de entorno y levantarlo en local usando Docker Compose.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requisitos previos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Herramienta        | Versión recomendada | Notas                                                  |
+| ------------------ | ------------------- | ------------------------------------------------------ |
+| **Git**            | ≥ 2.30              | Para clonar el repositorio.                            |
+| **Docker**         | ≥ 24 ⚙︎             | Incluye Docker Engine y Docker CLI.                    |
+| **Docker Compose** | ≥ 2.20              | Suele venir integrado a partir de Docker Desktop v2.5. |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+> ⚠️ **No necesitas instalar PHP ni MySQL** en tu máquina host; ambos se ejecutan en contenedores.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 1 · Clonar el repositorio
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/Frandg06/prueba-tecnica-sdi.git
+cd prueba-tecnica-sdi
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 2 · Copiar y editar el archivo `.env`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Laravel utiliza un archivo de variables de entorno para la configuración. Desde ahi puedes configurar las claves de Spotify y otros parámetros de tu aplicación.
 
-### Premium Partners
+Las claves de la base de datos se encuentran en el archivo `.env.example` y deben en caso de ser modificadas se debe actualizar también el archivo `docker-compose.yml`.
+y ejecutar `docker-compose up -d --build` para actualizar los contenedores.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+Ejecute el siguiente comando para copiar el archivo `.env.example` y crear el archivo `.env`:
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Variables mínimas a ajustar
 
-## Code of Conduct
+> 🔑 **¿No tienes claves de Spotify?** Puedes utilizar las que se adjuntan en el archivo `claves.txt` en el correo enviado adjunto a la prueba.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Clave                   | Valor de ejemplo       | ¿Dónde conseguirlo?                                                     |
+| ----------------------- | ---------------------- | ----------------------------------------------------------------------- |
+| `SPOTIFY_CLIENT_ID`     | `xxxxxxxxxxxxxxxxxxxx` | [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/) |
+| `SPOTIFY_CLIENT_SECRET` | `yyyyyyyyyyyyyyyyyyyy` | Mismo panel                                                             |
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 3 · Levantar los contenedores
 
-## License
+```bash
+# Descarga las imágenes y arranca todo en segundo plano
+docker-compose up -d --build
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   Contenedor **sdi_app** → Laravel
+-   Contenedor **sdi_db** → MySQL 8
+
+> **Primera ejecución**: cuando los contenedores se levantan por primera vez, la base de datos se encuentra vacía.
+>
+> Para generar la base de datos usando las migraciones definidas en el proyecto, ejecuta:
+>
+> ```bash
+> docker-compose exec sdi_app php artisan migrate:fresh
+> ```
+
+## 4 · Acceder a la aplicación
+
+| Servicio                  | URL por defecto                                                                  |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| **API / Backend Laravel** | [http://localhost:8888/api/v1](http://localhost:8888/api/v1)                     |
+| **DOCUMENTACIÓN**         | [http://localhost:8888/docs](http://localhost:8888/docs)                         |
+| **MySQL (CLI o IDE)**     | host `127.0.0.1`, puerto `3333`, usuario `sdi`, contraseña la indicada en `.env` |
+
+Si no has tocado nada, el puerto de acceso deberia ser 8888 que se define en el `docker-compose.yml`.
+
+---
